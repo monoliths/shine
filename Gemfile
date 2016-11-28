@@ -40,6 +40,9 @@ gem 'thor', '0.19.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+
+  # Used to create fake data for testing and development
+  gem 'faker'
 end
 
 group :development do

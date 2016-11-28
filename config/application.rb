@@ -21,5 +21,8 @@ module Shine
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+
+    # Save the database schema in sql rather than the Rails DSL
+    config.active_record.schema_format = :sql
   end
 end
