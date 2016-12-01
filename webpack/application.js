@@ -42,22 +42,28 @@ var AngularTestAppModule = ng.core.NgModule({
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  var shouldBootstrap = document.getElementById("angular-test");
+  var shouldBootstrap = document.getElementById("shine-angular-test");
   if (shouldBootstrap) {
     ng.platformBrowserDynamic.platformBrowserDynamic().bootstrapModule(AngularTestAppModule);
   }
 });
 
-
 var CustomerSearchComponent = ng.core.Component({
   selector: "shine-customer-search",
-  templateUrl: 'customer/customer-search.component.html'
+  templateUrl: 'customer-search.component.html'
 }).Class({
-  constructor: function(){}
+  constructor: function() {
+    // keywords is the name of the bindon-ngModel
+    // when a user types something in the search box, keywords will get updated
+    this.keywords = null;
+  },
+  search: function() {
+    alert("searched for " + this.keywords);
+  }
 });
 
-var CustomerSearchAppModule = ng.coreNgModule({
-  imports: [ng.platformBrowser.BrowserModule, ng.forms.FormsModule ],
+var CustomerSearchAppModule = ng.core.NgModule({
+  imports: [ ng.platformBrowser.BrowserModule, ng.forms.FormsModule ],
   declarations: [ CustomerSearchComponent ],
   bootstrap: [ CustomerSearchComponent ]
 }).Class({

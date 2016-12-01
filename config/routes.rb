@@ -6,4 +6,9 @@ Rails.application.routes.draw do
 
   # Angular test route to make sure Angular was properly installed to work with Rails
   get 'angular_test', to: "angular_test#index"
+
+
+
+  # Routes to Angular static components
+  get 'customer-search.component.html', to: redirect('/components/customer/customer-search.component.html')
 end
