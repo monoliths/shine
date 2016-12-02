@@ -1,9 +1,10 @@
-require ('application.css');
+require('application.css');
 require('bootstrap/dist/css/bootstrap.css');
 
 var coreJS = require('core-js');
 var zoneJS = require('zone.js');
 var reflectMetadata = require('reflect-metadata');
+
 var ng = {
   core: require("@angular/core"),
   common: require("@angular/common"),
@@ -11,7 +12,8 @@ var ng = {
   forms: require("@angular/forms"),
   platformBrowser: require("@angular/platform-browser"),
   platformBrowserDynamic: require("@angular/platform-browser-dynamic"),
-  router: require("@angular/router")
+  router: require("@angular/router"),
+  http: require("@angular/http")
 }
 
 var AngularTestComponent = ng.core.Component({
@@ -52,18 +54,39 @@ var CustomerSearchComponent = ng.core.Component({
   selector: "shine-customer-search",
   templateUrl: 'customer-search.component.html'
 }).Class({
-  constructor: function() {
-    // keywords is the name of the bindon-ngModel
-    // when a user types something in the search box, keywords will get updated
-    this.keywords = null;
-  },
-  search: function() {
-    alert("searched for " + this.keywords);
+  constructor: [
+    ng.http.Http,
+    function(http) {
+      // keywords is the name of the bindon-ngModel
+      // when a user types something in the search box, keywords will get updated
+      this.keywords = "";
+      this.http = http;
+      this.customers = null;
+    }
+  ],
+  search: function($event) {
+    var self = this;
+    self.keywords = $event;
+    if (self.keywords.length < 3) {
+      return;
+    }
+    self.http.get("/customers.json?keywords=" + self.keywords).subscribe(
+      function(response) {
+        self.customers = response.json().customers;
+      },
+      function(response) {
+        alert(response);
+      }
+    );
   }
 });
 
 var CustomerSearchAppModule = ng.core.NgModule({
-  imports: [ ng.platformBrowser.BrowserModule, ng.forms.FormsModule ],
+  imports: [
+    ng.platformBrowser.BrowserModule,
+    ng.forms.FormsModule,
+    ng.http.HttpModule
+  ],
   declarations: [ CustomerSearchComponent ],
   bootstrap: [ CustomerSearchComponent ]
 }).Class({
