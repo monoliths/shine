@@ -40,9 +40,15 @@ gem 'thor', '0.19.1'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-
   # Used to create fake data for testing and development
   gem 'faker'
+  # Testing framework
+  gem 'rspec-rails', '~> 3.0'
+  # Adapter for ruby code and scriptable JavaScript
+  gem 'poltergeist'
+
+  # database cleaner for tests
+  gem 'database_cleaner'
 end
 
 group :development do
