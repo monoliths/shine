@@ -85,15 +85,14 @@ RSpec.configure do |config|
   # used for acceptance testing. Basically we need to start and end the webpack server
   # manually to make sure JS and CSS is being served to PhanstomJS during tests
   config.before(:suite) do
-    $pid = spawn("./node_modules/.bin/webpack-dev-server " +
-                  "--config config/webpack.config.js --quiet")
-      DatabaseCleaner.clean_with(:truncation)
+    $pid = spawn("./node_modules/.bin/webpack-dev-server --config config/webpack.config.js --quiet")
+    DatabaseCleaner.clean_with(:truncation)
   end
   config.after(:suite) do
     puts "Killing webpack-dev-sever"
     Process.kill("HUP",$pid)
   begin
-    Timeout.timeout(2) do
+    Timeout.timeout(5) do
       Process.wait($pid, 0)
     end
     rescue => Timeout::Error
