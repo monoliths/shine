@@ -16,7 +16,7 @@ var config = {
     // Sources are expected to live in $app_root/webpack
     'application': './webpack/application.js'
   },
-  
+
   module: {
     loaders: [
       {
@@ -38,6 +38,10 @@ var config = {
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url?limit=10000&mimetype=image/svg+xml"
+      },
+      {
+        test: /\.html/,
+        loader: 'raw'
       }
     ]
   },

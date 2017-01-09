@@ -6,7 +6,7 @@ var ng = {
 
 var CustomerSearchComponent = ng.core.Component({
   selector: "shine-customer-search",
-  templateUrl: 'customer-search.component.html'
+  templateUrl: require("./CustomerSearchComponent.html")
 }).Class({
   constructor: [
     ng.http.Http,

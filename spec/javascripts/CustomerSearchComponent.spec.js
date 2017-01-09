@@ -1,4 +1,12 @@
-var CustomerSearchComponent = require("../../webpack/CustomerSearchComponent")
+var proxyquire = require("proxyquire");
+var CustomerSearchComponent = proxyquire(
+  "../../webpack/CustomerSearchComponent",
+  {
+    "./CustomerSearchComponent.html": {
+      "@noCallThru": "true"
+    }
+  }
+);
 
 // testdouble will allow us to use a generic test double library to stub Angulars HTTP library
 // we basically dont want to make http calls, se we are stubing by doubling Angulars HTTP Library
