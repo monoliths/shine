@@ -29,7 +29,7 @@ var CustomerSearchComponent = ng.core.Component({
         self.customers = response.json().customers;
       },
       function(response) {
-        alert(response);
+        window.alert(response);
       }
     );
   }

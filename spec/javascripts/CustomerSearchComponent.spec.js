@@ -6,7 +6,14 @@ var td = require("testdouble");
 
 var component = null;
 
+window = td.object(["alert"]);
+
 describe("CustomerSearchComponent", function(){
+
+  beforeEach(function() {
+    component = new CustomerSearchComponent();
+  });
+
   describe("initial state", function() {
     it("sets customers to null", function() {
       expect(component.customers).toBe(null);
@@ -54,21 +61,22 @@ describe("CustomerSearchComponent", function(){
           email: "pjones@somewhere.net"
         }
       ];
+
       beforeEach(function() {
         // the following mocks all HTTP calls to keep tests in isolation.
         var response = td.object(["json"]);
         td.when(response.json()).thenReturn({ customers: customers });
-        mockHttp = td.object(["get"]);
-        component = new CustomerSearchComponent(mockHttp);
 
         var observable = td.object(["subscribe"]);
-        td.when(observable.subscribe (
+        td.when(observable.subscribe(
           td.callback(response),
           td.matchers.isA(Function))).thenReturn();
 
           mockHttp = td.object(["get"]);
           td.when(mockHttp.get("/customers.json?keywords=pat")).thenReturn(observable);
+          component = new CustomerSearchComponent(mockHttp);
       });
+
       describe("A successful search", function() {
         it("sets the keywords to be 'pat'", function() {
           component.search("pat");
@@ -79,14 +87,39 @@ describe("CustomerSearchComponent", function(){
           expect(component.customers).toBe(customers)
         });
       });
+
       describe("A search that fails on the back-end", function(){
-        it("sets the keywords to 'pat'");
-        it("leaves the customers as null");
-        it("alerts the user with the response message");
+        beforeEach(function() {
+          var response = "There was an error!";
+          var observable = td.object(["subscribe"]);
+
+          td.when(observable.subscribe(
+            td.matchers.isA(Function),
+            td.callback(response))).thenReturn();
+
+          mockHttp = td.object(["get"]);
+          td.when(mockHttp.get("/customers.json?keywords=pat")).thenReturn(observable);
+
+          td.when(window.alert()).thenReturn();
+          component = new CustomerSearchComponent(mockHttp);
+        });
+
+        it("sets the keywords to 'pat'", function() {
+          component.search("pat");
+          expect(component.keywords).toBe("pat");
+        });
+
+        it("leaves the customers as null", function () {
+          component.search("pat");
+          expect(component.customers).toBe(null);
+        });
+
+        it("alerts the user with the response message", function() {
+          component.search("pat");
+          td.verify(window.alert("There was an error!"));
+        });
+
       });
     });
-  });
-  beforeEach(function(){
-    component = new CustomerSearchComponent();
   });
 });
