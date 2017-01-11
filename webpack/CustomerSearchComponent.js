@@ -1,21 +1,24 @@
 var reflectMetadata = require("reflect-metadata");
 var ng = {
   core: require("@angular/core"),
-  http: require("@angular/http")
+  http: require("@angular/http"),
+  router: require("@angular/router")
 }
 
 var CustomerSearchComponent = ng.core.Component({
   selector: "shine-customer-search",
-  templateUrl: require("./CustomerSearchComponent.html")
+  template: require("./CustomerSearchComponent.html")
 }).Class({
   constructor: [
     ng.http.Http,
-    function(http) {
+    ng.router.Router,
+    function(http, router) {
       // keywords is the name of the bindon-ngModel
-      // when a user types something in the search box, keywords will get updated
-      this.keywords = "";
-      this.http = http;
+      // when a user types something in the search box, keywords will get
       this.customers = null;
+      this.http = http;
+      this.router = router;
+      this.keywords = "";
     }
   ],
   search: function($event) {
@@ -32,6 +35,9 @@ var CustomerSearchComponent = ng.core.Component({
         window.alert(response);
       }
     );
+  },
+  viewDetails: function(customer) {
+    this.router.navigate(["/", customer.id]);
   }
 });
 

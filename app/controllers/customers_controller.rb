@@ -1,6 +1,10 @@
 class CustomersController < ApplicationController
   PAGE_SIZE = 10
 
+  def ng
+    @base_url = "/customers/ng"
+  end
+
   def index
     # what page the user wants to be displayed
     @page = (params[:page] || 0).to_i
@@ -16,7 +20,9 @@ class CustomersController < ApplicationController
       @customers = []
     end
     respond_to do |format|
-      format.html {}
+      format.html {
+        redirect_to "/customers/ng"
+      }
       format.json { render json: { customers: @customers } }
     end
   end

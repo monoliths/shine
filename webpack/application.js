@@ -16,6 +16,51 @@ var ng = {
   http: require("@angular/http")
 }
 
+var CustomerAppComponent = require("./CustomerAppComponent");
+var CustomerSearchComponent = require("./CustomerSearchComponent");
+var CustomerDetailsComponent = require("./CustomerDetailsComponent");
+
+var routing = ng.router.RouterModule.forRoot(
+  [
+    {
+      path: "",
+      component: CustomerSearchComponent
+    },
+    {
+      path: ":id",
+      component: CustomerDetailsComponent
+    }
+  ]
+);
+
+var CustomerSearchAppModule = ng.core.NgModule({
+  imports: [
+    ng.platformBrowser.BrowserModule,
+    ng.forms.FormsModule,
+    ng.http.HttpModule,
+    routing
+  ],
+  declarations: [
+    CustomerSearchComponent,
+    CustomerDetailsComponent,
+    CustomerAppComponent
+  ],
+  bootstrap: [ CustomerAppComponent ]
+}).Class({
+  constructor: function() {}
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  var shouldBootstrap = document.getElementById("shine-customer-search")
+  if (shouldBootstrap) {
+    ng.platformBrowserDynamic.platformBrowserDynamic().bootstrapModule(CustomerSearchAppModule);
+  }
+});
+
+
+
+/* Old Test module to verify Angular is properly installed
+
 var AngularTestComponent = ng.core.Component({
     selector: "shine-angular-test",
     template:'\
@@ -28,7 +73,6 @@ var AngularTestComponent = ng.core.Component({
       </div> \
     </form> \
     '
-
 }).Class({
   constructor: function() {
     this.name = null;
@@ -50,23 +94,4 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-var CustomerSearchComponent = require("./CustomerSearchComponent");
-
-var CustomerSearchAppModule = ng.core.NgModule({
-  imports: [
-    ng.platformBrowser.BrowserModule,
-    ng.forms.FormsModule,
-    ng.http.HttpModule
-  ],
-  declarations: [ CustomerSearchComponent ],
-  bootstrap: [ CustomerSearchComponent ]
-}).Class({
-  constructor: function() {}
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-  var shouldBootstrap = document.getElementById("shine-customer-search")
-  if (shouldBootstrap) {
-    ng.platformBrowserDynamic.platformBrowserDynamic().bootstrapModule(CustomerSearchAppModule);
-  }
-});
+*/
